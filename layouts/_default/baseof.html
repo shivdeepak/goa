@@ -8,6 +8,10 @@
 
     {{- partial "head.html" . -}}
     <body>
+        <!-- Option for user to inject custom html -->
+        {{ if .Site.Params.CustomBodyStartHTML }}
+        {{ .Site.Params.CustomBodyStartHTML | safeHTML }}
+        {{ end }}
         <script>
             // Immediately set theme on page load
             setThemeByUserPref();
