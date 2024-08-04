@@ -2,10 +2,10 @@
   --content-width: 1120px;
   --container-width: 810px;
 
-  --light-primary-color: 255, 255, 255;
-  --light-secondary-color: #dddddd;
-  --light-tertiary-color: #272822;
-  --light-text-color: black;
+  --light-primary-color: 253, 246, 227;
+  --light-secondary-color: #EEE8D5;
+  --light-tertiary-color: #002B36;
+  --light-text-color: #073642;
 }
 
 @font-face {
@@ -205,8 +205,8 @@ img {
 }
 
 a:hover .feather-sun {
-  fill: black;
-  color: black;
+  fill: #002B36;
+  color: #002B36;
 }
 
 .dark-theme-toggle .feather {
@@ -344,7 +344,7 @@ code {
 
 blockquote {
   border-left: 2px solid var(--light-secondary-color);
-  color: grey;
+  color: #586E75;
   padding-left: 1rem;
   margin-left: 0;
 }
@@ -462,7 +462,7 @@ table td {
   overflow-wrap: break-word;
 }
 .post .post-date, .prev-post-date, .next-post-date {
-  color: gray;
+  color: #586E75;
 }
 .post .post-content {
   line-height: 1.7;
@@ -611,7 +611,7 @@ table td {
   }
 
   .list-posts .post-date {
-    color: gray;
+    color: #586E75;
   }
 
   .footer {
@@ -673,7 +673,7 @@ table td {
 }
 
 .arrow-logo:hover {
-  fill:  var(--accent-color); 
+  fill:  var(--accent-color);
 }
 
 @media screen and (max-width: 600px) {
