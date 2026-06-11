@@ -11,6 +11,7 @@ const THEME_TO_ICON_TEXT_CLASS = {
 };
 let toggleIcon = '';
 let darkThemeCss = '';
+let themePrefsInitialized = false;
 
 const HEADING_TO_TOC_CLASS = {
     'H1': 'level-1',
@@ -91,13 +92,22 @@ function toggleHeaderShadow(scrollY) {
     }
 }
 
+function resolveTheme() {
+    if (window.__siteTheme) return window.__siteTheme.resolve();
+    return localStorage.getItem(THEME_PREF_STORAGE_KEY) ||
+        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+}
+
 function setThemeByUserPref() {
     darkThemeCss = document.getElementById("dark-theme");
-    const savedTheme = localStorage.getItem(THEME_PREF_STORAGE_KEY) ||
-        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark': 'light');
     const darkThemeToggles = document.querySelectorAll('.dark-theme-toggle');
-    setTheme(savedTheme, darkThemeToggles);
-    darkThemeToggles.forEach(el => el.addEventListener('click', toggleTheme, {capture: true}))
+    setTheme(resolveTheme(), darkThemeToggles);
+    if (themePrefsInitialized) return;
+    themePrefsInitialized = true;
+    darkThemeToggles.forEach(el => el.addEventListener('click', toggleTheme, {capture: true}));
+    window.addEventListener('sitethemechange', function (e) {
+        setTheme(e.detail.theme, document.querySelectorAll('.dark-theme-toggle'));
+    });
 }
 
 function toggleTheme(event) {
@@ -110,7 +120,15 @@ function toggleTheme(event) {
 }
 
 function setTheme(themeToSet, targets) {
-    darkThemeCss.disabled = themeToSet === 'light';
+    if (window.__siteTheme) {
+        window.__siteTheme.apply(themeToSet);
+    } else {
+        document.documentElement.dataset.theme = themeToSet;
+        document.documentElement.style.colorScheme = themeToSet;
+        if (darkThemeCss && darkThemeCss.disabled !== (themeToSet === 'light')) {
+            darkThemeCss.disabled = themeToSet === 'light';
+        }
+    }
     targets.forEach((target) => {
         target.querySelector('a').innerHTML = feather.icons[THEME_TO_ICON_CLASS[themeToSet].split('-')[1]].toSvg();
         target.querySelector(".dark-theme-toggle-screen-reader-target").textContent = [THEME_TO_ICON_TEXT_CLASS[themeToSet]];
